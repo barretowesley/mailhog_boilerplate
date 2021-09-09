@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  mailhog:
+    build: ./
+    image: mailhog
+    container_name: mailhog
+    hostname: mailhog
+    restart: on-failure
+    depends_on: 
+      - mailmongo
+    environment: 
+      # - MH_CORS_ORIGIN=""
+      - MH_HOSTNAME=mailhog.local
+      - MH_API_BIND_ADDR=0.0.0.0:8025
+      - MH_UI_BIND_ADDR=0.0.0.0:8025
+      - MH_MONGO_COLLECTION=messages
+      - MH_MONGO_DB=mailhog
+      - MH_MONGO_URI=mailmongo:27017
+      - MH_SMTP_BIND_ADDR=0.0.0.0:1025
+      - MH_STORAGE=mongodb
+      # - MH_UI_WEB_PATH=""
+      # - MH_AUTH_FILE="/home/mailhog/auth.file"
+    ports:
+      - 8025:8025
+    expose: 
+      - 1025
+      - 587
+    networks: 
+      - mailhog
+  mailmongo:
+    image: mongo:4.2-bionic
+    container_name: mailmongo
+    hostname: mailmongo
+    # environment: 
+    #     - MONGO_INITDB_ROOT_USERNAME=password
+    #     - MONGO_INITDB_ROOT_PASSWORD=username
+    #     - MONGO_INITDB_DATABASE=mailhog
+    volumes:
+      - data_mongo:/data/db
+    expose:
+      - 27017
+    networks:
+      - mailhog
+
+networks: 
+  mailhog:
+
+volumes:
+  data_mongo:

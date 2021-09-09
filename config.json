@@ -1,0 +1,11 @@
+{
+    "server name": {
+        "name": "mailhog.local",
+        "host": "mailhog",
+        "port": "587",
+        "email": "contato@mailhog.local",
+        "username": "contato",
+        "password": "contato",
+        "mechanism": "PLAIN"
+    }
+}
